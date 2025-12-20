@@ -5,6 +5,7 @@ package xyz.block.buildersyndicate.adapters.db.jooq.tables.references
 
 
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.FlywaySchemaHistory
+import xyz.block.buildersyndicate.adapters.db.jooq.tables.Posts
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.SchemaInfo
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.Users
 
@@ -14,6 +15,11 @@ import xyz.block.buildersyndicate.adapters.db.jooq.tables.Users
  * The table <code>buildersyndicate.flyway_schema_history</code>.
  */
 val FLYWAY_SCHEMA_HISTORY: FlywaySchemaHistory = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY
+
+/**
+ * The table <code>buildersyndicate.posts</code>.
+ */
+val POSTS: Posts = Posts.POSTS
 
 /**
  * The table <code>buildersyndicate.schema_info</code>.

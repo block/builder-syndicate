@@ -4,14 +4,17 @@
 package xyz.block.buildersyndicate.adapters.db.jooq.keys
 
 
+import org.jooq.ForeignKey
 import org.jooq.UniqueKey
 import org.jooq.impl.DSL
 import org.jooq.impl.Internal
 
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.FlywaySchemaHistory
+import xyz.block.buildersyndicate.adapters.db.jooq.tables.Posts
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.SchemaInfo
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.Users
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.records.FlywaySchemaHistoryRecord
+import xyz.block.buildersyndicate.adapters.db.jooq.tables.records.PostsRecord
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.records.SchemaInfoRecord
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.records.UsersRecord
 
@@ -22,6 +25,13 @@ import xyz.block.buildersyndicate.adapters.db.jooq.tables.records.UsersRecord
 // -------------------------------------------------------------------------
 
 val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY: UniqueKey<FlywaySchemaHistoryRecord> = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("KEY_flyway_schema_history_PRIMARY"), arrayOf(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK), true)
+val KEY_POSTS_PRIMARY: UniqueKey<PostsRecord> = Internal.createUniqueKey(Posts.POSTS, DSL.name("KEY_posts_PRIMARY"), arrayOf(Posts.POSTS.ID), true)
 val KEY_SCHEMA_INFO_PRIMARY: UniqueKey<SchemaInfoRecord> = Internal.createUniqueKey(SchemaInfo.SCHEMA_INFO, DSL.name("KEY_schema_info_PRIMARY"), arrayOf(SchemaInfo.SCHEMA_INFO.ID), true)
 val KEY_USERS_PRIMARY: UniqueKey<UsersRecord> = Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_PRIMARY"), arrayOf(Users.USERS.ID), true)
 val KEY_USERS_UK_USERS_EXTERNAL_ID: UniqueKey<UsersRecord> = Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_uk_users_external_id"), arrayOf(Users.USERS.EXTERNAL_ID), true)
+
+// -------------------------------------------------------------------------
+// FOREIGN KEY definitions
+// -------------------------------------------------------------------------
+
+val FK_POSTS_AUTHOR: ForeignKey<PostsRecord, UsersRecord> = Internal.createForeignKey(Posts.POSTS, DSL.name("fk_posts_author"), arrayOf(Posts.POSTS.AUTHOR_ID), xyz.block.buildersyndicate.adapters.db.jooq.keys.KEY_USERS_PRIMARY, arrayOf(Users.USERS.ID), true)

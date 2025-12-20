@@ -12,6 +12,13 @@ dev:
 down:
     docker-compose down
 
+# Wipe database and restart fresh
+db-reset:
+    docker-compose down -v
+    just dev
+    @sleep 2
+    just db-migrate
+
 # Run Flyway migrations
 db-migrate:
     source bin/activate-hermit && gradle flywayMigrate

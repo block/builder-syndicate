@@ -3,15 +3,17 @@ package xyz.block.buildersyndicate.adapters.db
 import com.mysql.cj.jdbc.MysqlDataSource
 import jakarta.inject.Singleton
 import misk.inject.KAbstractModule
+import xyz.block.buildersyndicate.core.posts.PostRepository
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import xyz.block.buildersyndicate.core.users.UserRepository
 
 public class DatabaseModule : KAbstractModule() {
-  override fun configure() {
-    bind<UserRepository>().to<JooqUserRepository>()
-  }
+    override fun configure() {
+        bind<UserRepository>().to<JooqUserRepository>()
+        bind<PostRepository>().to<JooqPostRepository>()
+    }
 
   @com.google.inject.Provides
   @Singleton
