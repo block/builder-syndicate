@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.misk.prometheus)
     implementation(libs.misk.admin)
     implementation(libs.wire.runtime)
+    implementation(libs.jooq.runtime)
+    implementation(libs.mysql.connector)
 
     flyway(libs.flyway.core)
     flyway(libs.flyway.mysql)
@@ -80,11 +82,20 @@ jooq {
     }
 }
 
+val jooqGeneratedDir = file("build/generated-sources/jooq")
+val hasJooqCode = jooqGeneratedDir.exists() && jooqGeneratedDir.listFiles()?.isNotEmpty() == true
+
 sourceSets {
     main {
         kotlin {
             srcDir("build/generated-sources/jooq")
         }
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    if (!hasJooqCode) {
+        exclude("**/adapters/db/**")
     }
 }
 
