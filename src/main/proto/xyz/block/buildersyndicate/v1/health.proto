@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package xyz.block.buildersyndicate.v1;
+
+option java_package = "xyz.block.buildersyndicate.protos.v1";
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  bool healthy = 1;
+  string message = 2;
+}

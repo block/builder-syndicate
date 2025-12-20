@@ -1,0 +1,28 @@
+[versions]
+kotlin = "2.1.0"
+misk = "2025.12.18.190627-2b05cda"
+wire = "5.4.0"
+flyway = "11.1.0"
+jooq = "3.19.16"
+mysql-connector = "9.1.0"
+
+[libraries]
+misk-bom = { module = "com.squareup.misk:misk-bom", version.ref = "misk" }
+misk = { module = "com.squareup.misk:misk" }
+misk-actions = { module = "com.squareup.misk:misk-actions" }
+misk-config = { module = "com.squareup.misk:misk-config" }
+misk-core = { module = "com.squareup.misk:misk-core" }
+misk-service = { module = "com.squareup.misk:misk-service" }
+misk-inject = { module = "com.squareup.misk:misk-inject" }
+misk-prometheus = { module = "com.squareup.misk:misk-prometheus" }
+misk-testing = { module = "com.squareup.misk:misk-testing" }
+wire-runtime = { module = "com.squareup.wire:wire-runtime" }
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }
+mysql-connector = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+wire = { id = "com.squareup.wire", version.ref = "wire" }
+flyway = { id = "net.ltgt.flyway", version = "0.2.0" }
+jooq = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
