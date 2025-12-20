@@ -13,20 +13,24 @@ down:
 
 # Run Flyway migrations
 db-migrate:
-    source bin/activate-hermit && gradle flywayMigrate
+    ./bin/gradle flywayMigrate
 
 # Generate jOOQ code from database (requires `just dev` first)
 codegen:
-    source bin/activate-hermit && gradle jooqCodegen
+    ./bin/gradle jooqCodegen
 
-# Build the project
+# Build the frontend only
+buildWeb:
+    cd web && npm install && npm run build
+
+# Build the project (includes frontend)
 build:
-    source bin/activate-hermit && gradle build
+    ./bin/gradle build -x test
 
 # Run tests
 test:
-    source bin/activate-hermit && gradle test
+    ./bin/gradle test
 
 # Run the application
 run:
-    source bin/activate-hermit && gradle run
+    ./bin/gradle run

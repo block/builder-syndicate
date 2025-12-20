@@ -13,3 +13,6 @@ build/
 
 # Docker
 mysql-data/
+
+# Node
+web/node_modules/
