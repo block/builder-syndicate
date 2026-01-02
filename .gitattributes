@@ -1,0 +1,13 @@
+# Default diff folding and linguist hints for noise files
+
+# Hermit and helper scripts: collapse in PRs as generated
+bin/hermit linguist-generated=true
+bin/activate-hermit linguist-generated=true
+bin/**/hermit* linguist-generated=true
+
+# Common generated/minified assets
+*.min.js linguist-generated=true
+*.map linguist-generated=true
+
+# Gradle wrapper and related binaries
+gradle/wrapper/** linguist-generated=true

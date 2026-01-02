@@ -127,6 +127,7 @@ When creating or working tickets:
 - **No sloppy overcommenting** — code should be self-explanatory; comments are for "why", not "what"
 - **Don't narrate the obvious** — `// Create a new user` above `createUser()` is noise
 - **Match existing patterns** — look at neighboring code before inventing new conventions
+- **Don't refactor unrelated code** — only modify files/patterns directly required by the task; "improving" existing patterns creates review noise and merge conflicts
 
 ## File Paths
 
@@ -198,3 +199,33 @@ When creating or working tickets:
 - [Wire (protobufs)](https://github.com/square/wire)
 - [jOOQ](https://www.jooq.org/doc/latest/manual/)
 - [Flyway](https://flywaydb.org/documentation/)
+
+## PR Diff Hygiene (GitHub folding / noise files)
+
+To keep PRs reviewer-friendly, configure GitHub’s default diff folding via a root-level `.gitattributes` and follow these rules:
+
+- Root `.gitattributes` is authoritative for GitHub Linguist.
+  - Use `linguist-generated=true` to auto-collapse noisy files in PRs.
+  - Use `-diff` only when line-by-line diffs are not useful (e.g., binary blobs). Prefer folding over suppressing diffs.
+- Required patterns (kept up to date):
+  ```gitattributes
+  # Hermit and helper scripts: collapse in PRs as generated
+  bin/hermit linguist-generated=true
+  bin/activate-hermit linguist-generated=true
+  bin/**/hermit* linguist-generated=true
+
+  # Gradle wrapper and related binaries
+  gradle/wrapper/** linguist-generated=true
+
+  # Common generated/minified assets (UI)
+  *.min.js linguist-generated=true
+  *.map linguist-generated=true
+
+  # Optional (use sparingly): completely suppress diffs
+  # bin/hermit -diff
+  # bin/activate-hermit -diff
+  ```
+- If a change introduces new generated/noisy files, update `.gitattributes` in the SAME PR.
+- Prefer `.gitignore` for ephemeral tooling outputs so they never enter the repo.
+- For already-open PRs, push a new commit after editing `.gitattributes` so GitHub reclassifies and folds diffs.
+- Do not refer to internal branch acronyms in PR descriptions when the work maps to a ticket; link the issue instead (e.g., `ref: #123`).
