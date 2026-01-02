@@ -1,4 +1,5 @@
 # Builder Syndicate development commands
+set shell := ["bash", "-c"]
 
 # Start local development environment (MySQL)
 dev:
@@ -13,24 +14,24 @@ down:
 
 # Run Flyway migrations
 db-migrate:
-    ./bin/gradle flywayMigrate
+    source bin/activate-hermit && gradle flywayMigrate
 
 # Generate jOOQ code from database (requires `just dev` first)
 codegen:
-    ./bin/gradle jooqCodegen
+    source bin/activate-hermit && gradle jooqCodegen
 
 # Build the frontend only
 buildWeb:
-    cd web && npm install && npm run build
+    source bin/activate-hermit && cd web && npm install && npm run build
 
 # Build the project (includes frontend)
 build:
-    ./bin/gradle build -x test
+    source bin/activate-hermit && gradle build
 
 # Run tests
 test:
-    ./bin/gradle test
+    source bin/activate-hermit && gradle test
 
 # Run the application
 run:
-    ./bin/gradle run
+    source bin/activate-hermit && gradle run

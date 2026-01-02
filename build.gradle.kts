@@ -106,9 +106,11 @@ tasks.test {
     useJUnitPlatform()
 }
 
+val npmCommand = file("bin/npm").absolutePath
+
 val npmInstall by tasks.registering(Exec::class) {
     workingDir = file("web")
-    commandLine("npm", "install")
+    commandLine(npmCommand, "install")
     inputs.file("web/package.json")
     outputs.dir("web/node_modules")
 }
@@ -116,7 +118,7 @@ val npmInstall by tasks.registering(Exec::class) {
 val buildWeb by tasks.registering(Exec::class) {
     dependsOn(npmInstall)
     workingDir = file("web")
-    commandLine("npm", "run", "build")
+    commandLine(npmCommand, "run", "build")
     inputs.dir("web/src")
     inputs.file("web/index.html")
     inputs.file("web/vite.config.ts")
