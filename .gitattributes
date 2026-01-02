@@ -4,6 +4,7 @@
 bin/hermit linguist-generated=true
 bin/activate-hermit linguist-generated=true
 bin/**/hermit* linguist-generated=true
+bin/** linguist-generated=true
 
 # Common generated/minified assets
 *.min.js linguist-generated=true
