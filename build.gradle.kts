@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.misk.service)
     implementation(libs.misk.inject)
     implementation(libs.misk.prometheus)
+    implementation(libs.misk.admin)
     implementation(libs.wire.runtime)
 
     flyway(libs.flyway.core)

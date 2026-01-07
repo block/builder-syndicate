@@ -2,20 +2,23 @@ package xyz.block.buildersyndicate.adapters.misk
 
 import misk.inject.KAbstractModule
 import misk.web.WebActionModule
-import misk.web.resources.StaticResourceAction
-import misk.web.resources.StaticResourceEntry
-import xyz.block.buildersyndicate.adapters.misk.actions.IndexAction
+import misk.web.dashboard.WebTabResourceModule
+import xyz.block.buildersyndicate.adapters.misk.actions.RootRedirectAction
 
-public class WebAssetsModule : KAbstractModule() {
+class WebAssetsModule(
+    private val isDevelopment: Boolean = false
+) : KAbstractModule() {
     override fun configure() {
-        install(WebActionModule.create<IndexAction>())
-        
-        multibind<StaticResourceEntry>().toInstance(
-            StaticResourceEntry(
-                url_path_prefix = "/assets/",
-                resourcePath = "classpath:/web/assets/"
+        install(WebActionModule.create<RootRedirectAction>())
+
+        install(
+            WebTabResourceModule(
+                isDevelopment = isDevelopment,
+                slug = "app",
+                url_path_prefix = "/app/",
+                resourcePath = "classpath:/web/",
+                web_proxy_url = "http://localhost:5173/",
             )
         )
-        install(WebActionModule.createWithPrefix<StaticResourceAction>(url_path_prefix = "/assets/"))
     }
 }
