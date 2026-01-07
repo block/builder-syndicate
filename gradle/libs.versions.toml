@@ -16,6 +16,7 @@ misk-service = { module = "com.squareup.misk:misk-service" }
 misk-inject = { module = "com.squareup.misk:misk-inject" }
 misk-prometheus = { module = "com.squareup.misk:misk-prometheus" }
 misk-testing = { module = "com.squareup.misk:misk-testing" }
+misk-admin = { module = "com.squareup.misk:misk-admin" }
 wire-runtime = { module = "com.squareup.wire:wire-runtime" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }

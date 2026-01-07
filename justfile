@@ -1,4 +1,5 @@
 # Builder Syndicate development commands
+set shell := ["bash", "-c"]
 
 # Start local development environment (MySQL)
 dev:
@@ -19,7 +20,11 @@ db-migrate:
 codegen:
     source bin/activate-hermit && gradle jooqCodegen
 
-# Build the project
+# Build the frontend only
+buildWeb:
+    source bin/activate-hermit && cd web && npm install && npm run build
+
+# Build the project (includes frontend)
 build:
     source bin/activate-hermit && gradle build
 

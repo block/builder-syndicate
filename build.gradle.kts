@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.misk.service)
     implementation(libs.misk.inject)
     implementation(libs.misk.prometheus)
+    implementation(libs.misk.admin)
     implementation(libs.wire.runtime)
 
     flyway(libs.flyway.core)
@@ -104,4 +105,30 @@ wire {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+val npmCommand = file("bin/npm").absolutePath
+
+val npmInstall by tasks.registering(Exec::class) {
+    workingDir = file("web")
+    commandLine(npmCommand, "install")
+    inputs.file("web/package.json")
+    outputs.dir("web/node_modules")
+}
+
+val buildWeb by tasks.registering(Exec::class) {
+    dependsOn(npmInstall)
+    workingDir = file("web")
+    commandLine(npmCommand, "run", "build")
+    inputs.dir("web/src")
+    inputs.file("web/index.html")
+    inputs.file("web/vite.config.ts")
+    outputs.dir("build/web")
+}
+
+tasks.named<ProcessResources>("processResources") {
+    dependsOn(buildWeb)
+    from("build/web") {
+        into("web")
+    }
 }
