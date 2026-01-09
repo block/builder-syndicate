@@ -94,6 +94,22 @@ just run          # Start the app
 - Scopes: `core`, `db`, `adapters`, `misk`, `ui`
 - One logical change per commit
 
+### Stacked PRs (Graphite)
+
+This repo uses [Graphite](https://graphite.dev) for stacked PR workflows:
+
+```bash
+gt log short      # View current stack
+gt create -m "feat: add feature"  # Create branch + commit in stack
+gt stack submit   # Push all branches, create/update stacked PRs
+gt stack restack  # Rebase stack after parent merges
+gt track --parent <branch> <branch>  # Adopt existing branch into stack
+```
+
+- **Always use `gt stack restack`** after a parent branch merges — don't manually rebase
+- **Use `gt create`** instead of `git checkout -b` to keep branches tracked
+- PRs are automatically linked as a stack on GitHub
+
 ## Authentication (Dev Mode)
 
 For local development, the OSS version ships a fake auth provider:
