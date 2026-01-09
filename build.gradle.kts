@@ -76,26 +76,17 @@ jooq {
             }
             target {
                 packageName = "xyz.block.buildersyndicate.adapters.db.jooq"
-                directory = "build/generated-sources/jooq"
+                directory = "src/generated/jooq"
             }
         }
     }
 }
 
-val jooqGeneratedDir = file("build/generated-sources/jooq")
-val hasJooqCode = jooqGeneratedDir.exists() && jooqGeneratedDir.listFiles()?.isNotEmpty() == true
-
 sourceSets {
     main {
         kotlin {
-            srcDir("build/generated-sources/jooq")
+            srcDir("src/generated/jooq")
         }
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    if (!hasJooqCode) {
-        exclude("**/adapters/db/**")
     }
 }
 
