@@ -179,12 +179,21 @@ When creating or working tickets:
 - **Prometheus metrics on separate port** — default 9102, not `/_admin/metrics` on main port
 - **Add logback.xml early** — Jetty DEBUG logs consume huge token counts; set level to WARN before testing
 - **Use `jakarta.inject`** not `javax.inject` for annotations
+- **WebAction methods can't take HttpCall as parameter** — inject `ActionScoped<HttpCall>` via constructor instead
 
 ### Build & Test
 
 - **DB tasks need `-PwithDb` flag** — Flyway/jOOQ tasks are skipped during normal build to allow cold builds
 - **Prefer `gradle compileKotlin` over `gradle run`** — verify compilation without port conflicts
 - **Hermit manages tooling** — use `gradle` not `./gradlew`, activate with `source bin/activate-hermit`
+- **jOOQ generated code is committed** — lives in `src/generated/jooq/`, enables DB-free builds; regenerate with `just codegen` after migrations
+- **Kill background processes** — if you spawn `gradle run` for testing, kill it when done; check `lsof -i :8080` or `:9102`
+
+### jOOQ & Database Wiring
+
+- **DatabaseModule must provide DSLContext** — jOOQ repos inject `DSLContext`; the module needs a `@Provides` method
+- **BuilderSyndicateModule must install DatabaseModule** — auth actions depend on UserRepository
+- **Test FK constraints** — when cleaning test data, delete child tables before parent (e.g., posts before users)
 
 ### Prior Work
 
