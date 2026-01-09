@@ -16,6 +16,8 @@ mysql-data/
 
 # Node
 web/node_modules/
+prs/*.md
+.hermit/node/cache
 
 # Kotlin Formatter
 .kotlinformatter/

@@ -12,11 +12,14 @@ dev:
 down:
     docker-compose down
 
-# Wipe database and restart fresh
-db-reset:
+# Wipe database volume and restart container (no migrations)
+db-nuke:
     docker-compose down -v
     just dev
     @sleep 2
+
+# Wipe database and restart fresh with migrations
+db-reset: db-nuke
     just db-migrate
 
 # Run Flyway migrations
