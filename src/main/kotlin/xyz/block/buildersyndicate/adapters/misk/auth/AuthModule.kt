@@ -1,40 +1,19 @@
 package xyz.block.buildersyndicate.adapters.misk.auth
 
-import com.google.inject.Provides
-import jakarta.inject.Singleton
-import misk.inject.KAbstractModule
-import misk.scope.ActionScoped
-import misk.web.HttpCall
+import misk.scope.ActionScopedProviderModule
 import misk.web.WebActionModule
-import xyz.block.buildersyndicate.adapters.misk.actions.LoginAction
 import xyz.block.buildersyndicate.adapters.misk.actions.LogoutAction
-import xyz.block.buildersyndicate.core.users.UserRepository
+import xyz.block.buildersyndicate.adapters.misk.actions.UnsafeDevLoginAction
+import xyz.block.buildersyndicate.adapters.misk.actions.WhoamiAction
 
-public class AuthModule : KAbstractModule() {
-    override fun configure() {
+class AuthModule : ActionScopedProviderModule() {
+    override fun configureProviders() {
         bind<SessionManager>().asEagerSingleton()
-        
-        install(WebActionModule.create<LoginAction>())
+
+        install(WebActionModule.create<UnsafeDevLoginAction>())
         install(WebActionModule.create<LogoutAction>())
-    }
+        install(WebActionModule.create<WhoamiAction>())
 
-    @Provides
-    @Singleton
-    fun provideCurrentUser(
-        httpCall: ActionScoped<HttpCall>,
-        sessionManager: SessionManager,
-        userRepository: UserRepository
-    ): CurrentUser {
-        val call = httpCall.get()
-        val cookies = call.requestHeaders["Cookie"] ?: return CurrentUser(null)
-        
-        val sessionToken = cookies.split(";")
-            .map { it.trim() }
-            .find { it.startsWith("${SessionManager.COOKIE_NAME}=") }
-            ?.substringAfter("=")
-            ?: return CurrentUser(null)
-
-        val userId = sessionManager.getUserId(sessionToken) ?: return CurrentUser(null)
-        return CurrentUser(userRepository.findById(userId))
+        bindProvider(CurrentUser::class, CurrentUserProvider::class)
     }
 }

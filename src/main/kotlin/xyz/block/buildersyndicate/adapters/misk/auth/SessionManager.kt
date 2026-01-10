@@ -6,7 +6,7 @@ import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
 
 @Singleton
-public class SessionManager {
+class SessionManager {
     private val sessions = ConcurrentHashMap<String, Long>()
     private val random = SecureRandom()
 
@@ -25,6 +25,8 @@ public class SessionManager {
     }
 
     companion object {
-        const val COOKIE_NAME = "bs_session"
+        const val COOKIE_NAME = "bbs__unsafe_session"
+        const val COOKIE_HEADER = "Cookie"
+        const val SET_COOKIE_HEADER = "Set-Cookie"
     }
 }
