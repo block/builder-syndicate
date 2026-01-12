@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.wire)
     alias(libs.plugins.flyway)
     alias(libs.plugins.jooq)
+    alias(libs.plugins.kotlin.formatter)
     application
 }
 
@@ -107,6 +108,10 @@ wire {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.named("check") {
+    dependsOn("checkFormatting")
 }
 
 val npmCommand = file("bin/npm").absolutePath

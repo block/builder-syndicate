@@ -1,0 +1,7 @@
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{kt,kts}"
+      run: bin/kotlin-format --set-exit-if-changed {staged_files}
+      stage_fixed: true
