@@ -1,113 +1,113 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.wire)
-    alias(libs.plugins.flyway)
-    alias(libs.plugins.jooq)
-    alias(libs.plugins.spotless)
-    application
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.wire)
+  alias(libs.plugins.flyway)
+  alias(libs.plugins.jooq)
+  alias(libs.plugins.spotless)
+  application
 }
 
 application {
-    mainClass.set("xyz.block.buildersyndicate.app.BuilderSyndicateServiceKt")
+  mainClass.set("xyz.block.buildersyndicate.app.BuilderSyndicateServiceKt")
 }
 
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(21))
+  }
 }
 
 kotlin {
-    jvmToolchain(21)
-    compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-    }
+  jvmToolchain(21)
+  compilerOptions {
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+  }
 }
 
 dependencies {
-    implementation(platform(libs.misk.bom))
-    implementation(libs.misk)
-    implementation(libs.misk.actions)
-    implementation(libs.misk.config)
-    implementation(libs.misk.core)
-    implementation(libs.misk.service)
-    implementation(libs.misk.inject)
-    implementation(libs.misk.prometheus)
-    implementation(libs.misk.admin)
-    implementation(libs.wire.runtime)
-    implementation(libs.jooq.runtime)
-    implementation(libs.mysql.connector)
+  implementation(platform(libs.misk.bom))
+  implementation(libs.misk)
+  implementation(libs.misk.actions)
+  implementation(libs.misk.config)
+  implementation(libs.misk.core)
+  implementation(libs.misk.service)
+  implementation(libs.misk.inject)
+  implementation(libs.misk.prometheus)
+  implementation(libs.misk.admin)
+  implementation(libs.wire.runtime)
+  implementation(libs.jooq.runtime)
+  implementation(libs.mysql.connector)
 
-    flyway(libs.flyway.core)
-    flyway(libs.flyway.mysql)
-    flyway(libs.mysql.connector)
+  flyway(libs.flyway.core)
+  flyway(libs.flyway.mysql)
+  flyway(libs.mysql.connector)
 
-    jooqCodegen(libs.mysql.connector)
+  jooqCodegen(libs.mysql.connector)
 
-    testImplementation(kotlin("test"))
-    testImplementation(libs.misk.testing)
+  testImplementation(kotlin("test"))
+  testImplementation(libs.misk.testing)
 }
 
 flyway {
-    url.set("jdbc:mysql://localhost:3307/buildersyndicate")
-    user.set("root")
-    password.set("root")
-    migrationLocations.from("src/main/resources/db/migration")
+  url.set("jdbc:mysql://localhost:3307/buildersyndicate")
+  user.set("root")
+  password.set("root")
+  migrationLocations.from("src/main/resources/db/migration")
 }
 
 jooq {
-    configuration {
-        jdbc {
-            driver = "com.mysql.cj.jdbc.Driver"
-            url = "jdbc:mysql://localhost:3307/buildersyndicate"
-            user = "root"
-            password = "root"
-        }
-        generator {
-            name = "org.jooq.codegen.KotlinGenerator"
-            database {
-                name = "org.jooq.meta.mysql.MySQLDatabase"
-                inputSchema = "buildersyndicate"
-            }
-            generate {
-                isDeprecated = false
-                isRecords = true
-                isImmutablePojos = true
-                isFluentSetters = true
-            }
-            target {
-                packageName = "xyz.block.buildersyndicate.adapters.db.jooq"
-                directory = "src/generated/jooq"
-            }
-        }
+  configuration {
+    jdbc {
+      driver = "com.mysql.cj.jdbc.Driver"
+      url = "jdbc:mysql://localhost:3307/buildersyndicate"
+      user = "root"
+      password = "root"
     }
+    generator {
+      name = "org.jooq.codegen.KotlinGenerator"
+      database {
+        name = "org.jooq.meta.mysql.MySQLDatabase"
+        inputSchema = "buildersyndicate"
+      }
+      generate {
+        isDeprecated = false
+        isRecords = true
+        isImmutablePojos = true
+        isFluentSetters = true
+      }
+      target {
+        packageName = "xyz.block.buildersyndicate.adapters.db.jooq"
+        directory = "src/generated/jooq"
+      }
+    }
+  }
 }
 
 sourceSets {
-    main {
-        kotlin {
-            srcDir("src/generated/jooq")
-        }
+  main {
+    kotlin {
+      srcDir("src/generated/jooq")
     }
+  }
 }
 
 tasks.named("jooqCodegen") {
-    onlyIf {
-        gradle.startParameter.taskNames.any { it.contains("jooqCodegen") || it.contains("codegen") }
-    }
+  onlyIf {
+    gradle.startParameter.taskNames.any { it.contains("jooqCodegen") || it.contains("codegen") }
+  }
 }
 
 wire {
-    kotlin {
-        javaInterop = true
-    }
-    sourcePath {
-        srcDir("src/main/proto")
-    }
+  kotlin {
+    javaInterop = true
+  }
+  sourcePath {
+    srcDir("src/main/proto")
+  }
 }
 
 tasks.test {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 spotless {
@@ -128,25 +128,25 @@ spotless {
 val npmCommand = file("bin/npm").absolutePath
 
 val npmInstall by tasks.registering(Exec::class) {
-    workingDir = file("web")
-    commandLine(npmCommand, "install")
-    inputs.file("web/package.json")
-    outputs.dir("web/node_modules")
+  workingDir = file("web")
+  commandLine(npmCommand, "install")
+  inputs.file("web/package.json")
+  outputs.dir("web/node_modules")
 }
 
 val buildWeb by tasks.registering(Exec::class) {
-    dependsOn(npmInstall)
-    workingDir = file("web")
-    commandLine(npmCommand, "run", "build")
-    inputs.dir("web/src")
-    inputs.file("web/index.html")
-    inputs.file("web/vite.config.ts")
-    outputs.dir("build/web")
+  dependsOn(npmInstall)
+  workingDir = file("web")
+  commandLine(npmCommand, "run", "build")
+  inputs.dir("web/src")
+  inputs.file("web/index.html")
+  inputs.file("web/vite.config.ts")
+  outputs.dir("build/web")
 }
 
 tasks.named<ProcessResources>("processResources") {
-    dependsOn(buildWeb)
-    from("build/web") {
-        into("web")
-    }
+  dependsOn(buildWeb)
+  from("build/web") {
+    into("web")
+  }
 }
