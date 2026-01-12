@@ -1,14 +1,14 @@
 rootProject.name = "builder-syndicate"
 
 pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-    }
+  repositories {
+    gradlePluginPortal()
+    mavenCentral()
+  }
 }
 
 dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
+  repositories {
+    mavenCentral()
+  }
 }
