@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.wire)
     alias(libs.plugins.flyway)
     alias(libs.plugins.jooq)
-    alias(libs.plugins.kotlin.formatter)
+    alias(libs.plugins.spotless)
     application
 }
 
@@ -110,8 +110,19 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.named("check") {
-    dependsOn("checkFormatting")
+spotless {
+  kotlin {
+    target("src/main/kotlin/**/*.kt", "src/test/kotlin/**/*.kt")
+    ktlint().editorConfigOverride(
+      mapOf(
+        "ktlint_standard_class-signature" to "disabled",
+        "ktlint_standard_function-expression-body" to "disabled",
+      ),
+    )
+  }
+  kotlinGradle {
+    ktlint()
+  }
 }
 
 val npmCommand = file("bin/npm").absolutePath

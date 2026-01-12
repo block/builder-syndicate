@@ -19,3 +19,4 @@ web/node_modules/
 
 # Kotlin Formatter
 .kotlinformatter/
+/.hermit/node/cache/

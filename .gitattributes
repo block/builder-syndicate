@@ -12,3 +12,6 @@ bin/** linguist-generated=true
 
 # Gradle wrapper and related binaries
 gradle/wrapper/** linguist-generated=true
+
+# JOOQ generated sources
+src/generated/jooq/** linguist-generated=true

@@ -3,5 +3,6 @@ pre-commit:
   commands:
     format:
       glob: "*.{kt,kts}"
+      exclude: "src/generated/**"
       run: bin/kotlin-format --set-exit-if-changed {staged_files}
       stage_fixed: true
