@@ -5,6 +5,7 @@ wire = "5.4.0"
 flyway = "11.1.0"
 jooq = "3.19.16"
 mysql-connector = "9.1.0"
+kotlin-formatter = "1.6.3"
 
 [libraries]
 misk-bom = { module = "com.squareup.misk:misk-bom", version.ref = "misk" }
@@ -28,3 +29,4 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 wire = { id = "com.squareup.wire", version.ref = "wire" }
 flyway = { id = "net.ltgt.flyway", version = "0.2.0" }
 jooq = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
+kotlin-formatter = { id = "xyz.block.kotlin-formatter", version.ref = "kotlin-formatter" }
