@@ -6,9 +6,9 @@ import xyz.block.buildersyndicate.adapters.misk.WebAssetsModule
 import xyz.block.buildersyndicate.adapters.misk.auth.AuthModule
 
 public class BuilderSyndicateModule : KAbstractModule() {
-    override fun configure() {
-        install(DatabaseModule())
-        install(WebAssetsModule())
-        install(AuthModule())
-    }
+  override fun configure() {
+    install(DatabaseModule())
+    install(WebAssetsModule())
+    install(AuthModule())
+  }
 }

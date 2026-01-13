@@ -13,35 +13,35 @@ import xyz.block.buildersyndicate.adapters.misk.auth.CurrentUser
 
 @Singleton
 class WhoamiAction @Inject constructor(
-    private val currentUser: ActionScoped<CurrentUser>
+  private val currentUser: ActionScoped<CurrentUser>,
 ) : WebAction {
 
-    data class WhoamiResponse(
-        val id: Long,
-        val externalId: String,
-        val email: String,
-        val displayName: String,
-        val avatarUrl: String?
+  data class WhoamiResponse(
+    val id: Long,
+    val externalId: String,
+    val email: String,
+    val displayName: String,
+    val avatarUrl: String?,
+  )
+
+  @Get("/api/v1/whoami")
+  @Unauthenticated
+  @ResponseContentType(MediaTypes.APPLICATION_JSON)
+  fun whoami(): Response<WhoamiResponse> {
+    val user = currentUser.get().user
+      ?: return Response(
+        body = WhoamiResponse(0, "", "", "", null),
+        statusCode = 401,
+      )
+
+    return Response(
+      body = WhoamiResponse(
+        id = user.id!!,
+        externalId = user.externalId,
+        email = user.email,
+        displayName = user.displayName,
+        avatarUrl = user.avatarUrl,
+      ),
     )
-
-    @Get("/api/v1/whoami")
-    @Unauthenticated
-    @ResponseContentType(MediaTypes.APPLICATION_JSON)
-    fun whoami(): Response<WhoamiResponse> {
-        val user = currentUser.get().user
-            ?: return Response(
-                body = WhoamiResponse(0, "", "", "", null),
-                statusCode = 401
-            )
-
-        return Response(
-            body = WhoamiResponse(
-                id = user.id!!,
-                externalId = user.externalId,
-                email = user.email,
-                displayName = user.displayName,
-                avatarUrl = user.avatarUrl
-            )
-        )
-    }
+  }
 }

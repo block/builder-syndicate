@@ -14,114 +14,114 @@ import kotlin.test.assertNull
 
 class CurrentUserProviderTest {
 
-    private fun httpCallWithCookies(cookies: String? = null): ActionScoped<HttpCall> {
-        val headers = if (cookies != null) {
-          headersOf(SessionManager.COOKIE_HEADER to cookies)
-        } else {
-          Headers.EMPTY
-        }
-        val httpCall = FakeHttpCall(requestHeaders = headers)
-        return object : ActionScoped<HttpCall> {
-            override fun get(): HttpCall = httpCall
-        }
+  private fun httpCallWithCookies(cookies: String? = null): ActionScoped<HttpCall> {
+    val headers = if (cookies != null) {
+      headersOf(SessionManager.COOKIE_HEADER to cookies)
+    } else {
+      Headers.EMPTY
     }
-
-    @Test
-    fun `returns null user when no cookie header`() {
-        val provider = CurrentUserProvider(
-            httpCallWithCookies(null),
-            SessionManager(),
-            FakeUserRepository()
-        )
-
-        val result = provider.get()
-
-        assertNull(result.user)
+    val httpCall = FakeHttpCall(requestHeaders = headers)
+    return object : ActionScoped<HttpCall> {
+      override fun get(): HttpCall = httpCall
     }
+  }
 
-    @Test
-    fun `returns null user when no session cookie`() {
-        val provider = CurrentUserProvider(
-            httpCallWithCookies("other_cookie=value"),
-            SessionManager(),
-            FakeUserRepository()
-        )
+  @Test
+  fun `returns null user when no cookie header`() {
+    val provider = CurrentUserProvider(
+      httpCallWithCookies(null),
+      SessionManager(),
+      FakeUserRepository(),
+    )
 
-        val result = provider.get()
+    val result = provider.get()
 
-        assertNull(result.user)
-    }
+    assertNull(result.user)
+  }
 
-    @Test
-    fun `returns null user when session token invalid`() {
-        val provider = CurrentUserProvider(
-            httpCallWithCookies("${SessionManager.COOKIE_NAME}=invalid-token"),
-            SessionManager(),
-            FakeUserRepository()
-        )
+  @Test
+  fun `returns null user when no session cookie`() {
+    val provider = CurrentUserProvider(
+      httpCallWithCookies("other_cookie=value"),
+      SessionManager(),
+      FakeUserRepository(),
+    )
 
-        val result = provider.get()
+    val result = provider.get()
 
-        assertNull(result.user)
-    }
+    assertNull(result.user)
+  }
 
-    @Test
-    fun `returns null user when user not found in repository`() {
-        val sessionManager = SessionManager()
-        val token = sessionManager.createSession(42L)
+  @Test
+  fun `returns null user when session token invalid`() {
+    val provider = CurrentUserProvider(
+      httpCallWithCookies("${SessionManager.COOKIE_NAME}=invalid-token"),
+      SessionManager(),
+      FakeUserRepository(),
+    )
 
-        val provider = CurrentUserProvider(
-            httpCallWithCookies("${SessionManager.COOKIE_NAME}=$token"),
-            sessionManager,
-            FakeUserRepository()
-        )
+    val result = provider.get()
 
-        val result = provider.get()
+    assertNull(result.user)
+  }
 
-        assertNull(result.user)
-    }
+  @Test
+  fun `returns null user when user not found in repository`() {
+    val sessionManager = SessionManager()
+    val token = sessionManager.createSession(42L)
 
-    @Test
-    fun `returns user when session is valid`() {
-        val sessionManager = SessionManager()
-        val token = sessionManager.createSession(42L)
-        val user = User(
-            id = 42L,
-            externalId = "dev-alice",
-            email = "alice@example.com",
-            displayName = "Alice"
-        )
-        val userRepository = FakeUserRepository().apply { addUser(user) }
+    val provider = CurrentUserProvider(
+      httpCallWithCookies("${SessionManager.COOKIE_NAME}=$token"),
+      sessionManager,
+      FakeUserRepository(),
+    )
 
-        val provider = CurrentUserProvider(
-            httpCallWithCookies("${SessionManager.COOKIE_NAME}=$token"),
-            sessionManager,
-            userRepository
-        )
+    val result = provider.get()
 
-        val result = provider.get()
+    assertNull(result.user)
+  }
 
-        assertNotNull(result.user)
-        assertEquals(42L, result.user?.id)
-        assertEquals("dev-alice", result.user?.externalId)
-    }
+  @Test
+  fun `returns user when session is valid`() {
+    val sessionManager = SessionManager()
+    val token = sessionManager.createSession(42L)
+    val user = User(
+      id = 42L,
+      externalId = "dev-alice",
+      email = "alice@example.com",
+      displayName = "Alice",
+    )
+    val userRepository = FakeUserRepository().apply { addUser(user) }
 
-    @Test
-    fun `parses session cookie from multiple cookies`() {
-        val sessionManager = SessionManager()
-        val token = sessionManager.createSession(1L)
-        val user = User(id = 1L, externalId = "test", email = "test@example.com", displayName = "Test")
-        val userRepository = FakeUserRepository().apply { addUser(user) }
+    val provider = CurrentUserProvider(
+      httpCallWithCookies("${SessionManager.COOKIE_NAME}=$token"),
+      sessionManager,
+      userRepository,
+    )
 
-        val provider = CurrentUserProvider(
-            httpCallWithCookies("other=foo; ${SessionManager.COOKIE_NAME}=$token; another=bar"),
-            sessionManager,
-            userRepository
-        )
+    val result = provider.get()
 
-        val result = provider.get()
+    assertNotNull(result.user)
+    assertEquals(42L, result.user?.id)
+    assertEquals("dev-alice", result.user?.externalId)
+  }
 
-        assertNotNull(result.user)
-        assertEquals(1L, result.user?.id)
-    }
+  @Test
+  fun `parses session cookie from multiple cookies`() {
+    val sessionManager = SessionManager()
+    val token = sessionManager.createSession(1L)
+    val user = User(id = 1L, externalId = "test", email = "test@example.com", displayName = "Test")
+    val userRepository = FakeUserRepository().apply { addUser(user) }
+
+    val provider = CurrentUserProvider(
+      httpCallWithCookies("other=foo; ${SessionManager.COOKIE_NAME}=$token; another=bar"),
+      sessionManager,
+      userRepository,
+    )
+
+    val result = provider.get()
+
+    assertNotNull(result.user)
+    assertEquals(1L, result.user?.id)
+  }
 }

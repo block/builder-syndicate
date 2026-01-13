@@ -7,13 +7,13 @@ import xyz.block.buildersyndicate.adapters.misk.actions.UnsafeDevLoginAction
 import xyz.block.buildersyndicate.adapters.misk.actions.WhoamiAction
 
 class AuthModule : ActionScopedProviderModule() {
-    override fun configureProviders() {
-        bind<SessionManager>().asEagerSingleton()
+  override fun configureProviders() {
+    bind<SessionManager>().asEagerSingleton()
 
-        install(WebActionModule.create<UnsafeDevLoginAction>())
-        install(WebActionModule.create<LogoutAction>())
-        install(WebActionModule.create<WhoamiAction>())
+    install(WebActionModule.create<UnsafeDevLoginAction>())
+    install(WebActionModule.create<LogoutAction>())
+    install(WebActionModule.create<WhoamiAction>())
 
-        bindProvider(CurrentUser::class, CurrentUserProvider::class)
-    }
+    bindProvider(CurrentUser::class, CurrentUserProvider::class)
+  }
 }
