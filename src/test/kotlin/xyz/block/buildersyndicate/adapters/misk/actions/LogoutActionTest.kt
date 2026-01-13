@@ -6,6 +6,7 @@ import misk.web.HttpCall
 import okhttp3.Headers
 import org.junit.jupiter.api.Test
 import xyz.block.buildersyndicate.adapters.misk.auth.SessionManager
+import xyz.block.buildersyndicate.adapters.misk.headersOf
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -13,7 +14,11 @@ import kotlin.test.assertTrue
 class LogoutActionTest {
 
     private fun httpCallWithCookies(cookies: String? = null): ActionScoped<HttpCall> {
-        val headers = if (cookies != null) Headers.headersOf(SessionManager.COOKIE_HEADER, cookies) else Headers.headersOf()
+        val headers = if (cookies != null) {
+          headersOf(SessionManager.COOKIE_HEADER to cookies)
+        } else {
+          Headers.EMPTY
+        }
         val httpCall = FakeHttpCall(requestHeaders = headers)
         return object : ActionScoped<HttpCall> {
             override fun get(): HttpCall = httpCall

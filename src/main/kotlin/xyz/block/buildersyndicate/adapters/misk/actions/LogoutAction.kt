@@ -10,8 +10,8 @@ import misk.web.Response
 import misk.web.ResponseBody
 import misk.web.actions.WebAction
 import misk.web.toResponseBody
-import okhttp3.Headers.Companion.headersOf
 import xyz.block.buildersyndicate.adapters.misk.auth.SessionManager
+import xyz.block.buildersyndicate.adapters.misk.headersOf
 
 @Singleton
 public class LogoutAction @Inject constructor(
@@ -38,9 +38,9 @@ public class LogoutAction @Inject constructor(
             body = "".toResponseBody(),
             statusCode = 302,
             headers = headersOf(
-                "Location", "/",
-                "Set-Cookie", "${SessionManager.COOKIE_NAME}=; Path=/; HttpOnly; Max-Age=0"
-            )
+                "Location" to "/",
+                "Set-Cookie" to "${SessionManager.COOKIE_NAME}=; Path=/; HttpOnly; Max-Age=0",
+            ),
         )
     }
 }

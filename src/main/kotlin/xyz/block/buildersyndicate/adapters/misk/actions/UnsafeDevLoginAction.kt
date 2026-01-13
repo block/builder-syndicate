@@ -12,6 +12,7 @@ import misk.web.ResponseContentType
 import misk.web.actions.WebAction
 import misk.web.mediatype.MediaTypes
 import xyz.block.buildersyndicate.adapters.misk.auth.SessionManager
+import xyz.block.buildersyndicate.adapters.misk.headersOf
 import xyz.block.buildersyndicate.core.users.User
 import xyz.block.buildersyndicate.core.users.UserRepository
 
@@ -72,8 +73,8 @@ class UnsafeDevLoginAction @Inject constructor(
         return Response(
             body = LoginResponse(sessionToken, devUser),
             statusCode = 200,
-            headers = okhttp3.Headers.headersOf(
-                SessionManager.SET_COOKIE_HEADER, "${SessionManager.COOKIE_NAME}=$sessionToken; Path=/; HttpOnly; SameSite=Lax"
+            headers = headersOf(
+                SessionManager.SET_COOKIE_HEADER to "${SessionManager.COOKIE_NAME}=$sessionToken; Path=/; HttpOnly; SameSite=Lax"
             )
         )
     }

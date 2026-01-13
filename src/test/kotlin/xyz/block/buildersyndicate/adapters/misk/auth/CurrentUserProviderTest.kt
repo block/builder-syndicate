@@ -5,6 +5,7 @@ import misk.web.FakeHttpCall
 import misk.web.HttpCall
 import okhttp3.Headers
 import org.junit.jupiter.api.Test
+import xyz.block.buildersyndicate.adapters.misk.headersOf
 import xyz.block.buildersyndicate.core.users.FakeUserRepository
 import xyz.block.buildersyndicate.core.users.User
 import kotlin.test.assertEquals
@@ -14,7 +15,11 @@ import kotlin.test.assertNull
 class CurrentUserProviderTest {
 
     private fun httpCallWithCookies(cookies: String? = null): ActionScoped<HttpCall> {
-        val headers = if (cookies != null) Headers.headersOf(SessionManager.COOKIE_HEADER, cookies) else Headers.headersOf()
+        val headers = if (cookies != null) {
+          headersOf(SessionManager.COOKIE_HEADER to cookies)
+        } else {
+          Headers.EMPTY
+        }
         val httpCall = FakeHttpCall(requestHeaders = headers)
         return object : ActionScoped<HttpCall> {
             override fun get(): HttpCall = httpCall
