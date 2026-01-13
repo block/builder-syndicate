@@ -10,6 +10,7 @@ import misk.web.ResponseContentType
 import misk.web.actions.WebAction
 import misk.web.mediatype.MediaTypes
 import xyz.block.buildersyndicate.adapters.misk.auth.CurrentUser
+import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 
 @Singleton
 class WhoamiAction @Inject constructor(
@@ -31,7 +32,7 @@ class WhoamiAction @Inject constructor(
     val user = currentUser.get().user
       ?: return Response(
         body = WhoamiResponse(0, "", "", "", null),
-        statusCode = 401,
+        statusCode = HTTP_UNAUTHORIZED,
       )
 
     return Response(

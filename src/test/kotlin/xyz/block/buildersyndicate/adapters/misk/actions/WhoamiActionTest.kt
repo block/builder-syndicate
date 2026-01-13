@@ -4,6 +4,8 @@ import misk.scope.ActionScoped
 import org.junit.jupiter.api.Test
 import xyz.block.buildersyndicate.adapters.misk.auth.CurrentUser
 import xyz.block.buildersyndicate.core.users.User
+import java.net.HttpURLConnection.HTTP_OK
+import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import java.time.Instant
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -22,7 +24,7 @@ class WhoamiActionTest {
 
     val response = action.whoami()
 
-    assertEquals(401, response.statusCode)
+    assertEquals(HTTP_UNAUTHORIZED, response.statusCode)
   }
 
   @Test
@@ -40,7 +42,7 @@ class WhoamiActionTest {
 
     val response = action.whoami()
 
-    assertEquals(200, response.statusCode)
+    assertEquals(HTTP_OK, response.statusCode)
     assertNotNull(response.body)
     assertEquals(42L, response.body.id)
     assertEquals("dev-alice", response.body.externalId)
@@ -62,7 +64,7 @@ class WhoamiActionTest {
 
     val response = action.whoami()
 
-    assertEquals(200, response.statusCode)
+    assertEquals(HTTP_OK, response.statusCode)
     assertEquals(null, response.body.avatarUrl)
   }
 }

@@ -3,18 +3,15 @@ package xyz.block.buildersyndicate.adapters.misk.actions
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 import misk.security.authz.Unauthenticated
-import misk.web.Get
-import misk.web.Post
-import misk.web.RequestBody
-import misk.web.RequestContentType
-import misk.web.Response
-import misk.web.ResponseContentType
+import misk.web.*
 import misk.web.actions.WebAction
 import misk.web.mediatype.MediaTypes
 import xyz.block.buildersyndicate.adapters.misk.auth.SessionManager
 import xyz.block.buildersyndicate.adapters.misk.headersOf
 import xyz.block.buildersyndicate.core.users.User
 import xyz.block.buildersyndicate.core.users.UserRepository
+import java.net.HttpURLConnection.HTTP_BAD_REQUEST
+import java.net.HttpURLConnection.HTTP_OK
 
 @Singleton
 class UnsafeDevLoginAction @Inject constructor(
@@ -54,7 +51,7 @@ class UnsafeDevLoginAction @Inject constructor(
     val devUser = devUsers.find { it.username == request.username }
       ?: return Response(
         body = LoginResponse("", DevUser("", "")),
-        statusCode = 400,
+        statusCode = HTTP_BAD_REQUEST,
       )
 
     val details = devUserDetails[request.username]!!
@@ -72,7 +69,7 @@ class UnsafeDevLoginAction @Inject constructor(
 
     return Response(
       body = LoginResponse(sessionToken, devUser),
-      statusCode = 200,
+      statusCode = HTTP_OK,
       headers = headersOf(
         SessionManager.SET_COOKIE_HEADER to
           "${SessionManager.COOKIE_NAME}=$sessionToken; Path=/; HttpOnly; SameSite=Lax",

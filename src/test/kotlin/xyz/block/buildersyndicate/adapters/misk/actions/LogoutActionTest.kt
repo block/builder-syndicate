@@ -7,6 +7,7 @@ import okhttp3.Headers
 import org.junit.jupiter.api.Test
 import xyz.block.buildersyndicate.adapters.misk.auth.SessionManager
 import xyz.block.buildersyndicate.adapters.misk.headersOf
+import java.net.HttpURLConnection.HTTP_MOVED_TEMP
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -31,7 +32,7 @@ class LogoutActionTest {
 
     val response = action.handleLogout()
 
-    assertEquals(302, response.statusCode)
+    assertEquals(HTTP_MOVED_TEMP, response.statusCode)
     assertEquals("/", response.headers["Location"])
   }
 
@@ -63,7 +64,7 @@ class LogoutActionTest {
 
     val response = action.handleLogout()
 
-    assertEquals(302, response.statusCode)
+    assertEquals(HTTP_MOVED_TEMP, response.statusCode)
   }
 
   @Test
@@ -72,6 +73,6 @@ class LogoutActionTest {
 
     val response = action.handleLogout()
 
-    assertEquals(302, response.statusCode)
+    assertEquals(HTTP_MOVED_TEMP, response.statusCode)
   }
 }

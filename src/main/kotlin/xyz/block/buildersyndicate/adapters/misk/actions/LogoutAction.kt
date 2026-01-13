@@ -12,6 +12,7 @@ import misk.web.actions.WebAction
 import misk.web.toResponseBody
 import xyz.block.buildersyndicate.adapters.misk.auth.SessionManager
 import xyz.block.buildersyndicate.adapters.misk.headersOf
+import java.net.HttpURLConnection.HTTP_MOVED_TEMP
 
 @Singleton
 public class LogoutAction @Inject constructor(
@@ -36,7 +37,7 @@ public class LogoutAction @Inject constructor(
 
     return Response(
       body = "".toResponseBody(),
-      statusCode = 302,
+      statusCode = HTTP_MOVED_TEMP,
       headers = headersOf(
         "Location" to "/",
         "Set-Cookie" to "${SessionManager.COOKIE_NAME}=; Path=/; HttpOnly; Max-Age=0",

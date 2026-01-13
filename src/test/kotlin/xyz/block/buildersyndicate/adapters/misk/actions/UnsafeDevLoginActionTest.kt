@@ -1,9 +1,12 @@
 package xyz.block.buildersyndicate.adapters.misk.actions
 
 import org.junit.jupiter.api.Test
+import retrofit2.http.HTTP
 import xyz.block.buildersyndicate.adapters.misk.auth.SessionManager
 import xyz.block.buildersyndicate.core.users.FakeUserRepository
 import xyz.block.buildersyndicate.core.users.User
+import java.net.HttpURLConnection.HTTP_BAD_REQUEST
+import java.net.HttpURLConnection.HTTP_OK
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -28,7 +31,7 @@ class UnsafeDevLoginActionTest {
 
     val response = action.login(UnsafeDevLoginAction.LoginRequest("invalid-user"))
 
-    assertEquals(400, response.statusCode)
+    assertEquals(HTTP_BAD_REQUEST, response.statusCode)
   }
 
   @Test
@@ -38,7 +41,7 @@ class UnsafeDevLoginActionTest {
 
     val response = action.login(UnsafeDevLoginAction.LoginRequest("dev-alice"))
 
-    assertEquals(200, response.statusCode)
+    assertEquals(HTTP_OK, response.statusCode)
     assertEquals(1, userRepository.createdUsers.size)
     assertEquals("dev-alice", userRepository.createdUsers[0].externalId)
   }
@@ -51,7 +54,7 @@ class UnsafeDevLoginActionTest {
 
     val response = action.login(UnsafeDevLoginAction.LoginRequest("dev-bob"))
 
-    assertEquals(200, response.statusCode)
+    assertEquals(HTTP_OK, response.statusCode)
     assertEquals(0, userRepository.createdUsers.size)
   }
 
@@ -63,7 +66,7 @@ class UnsafeDevLoginActionTest {
 
     val response = action.login(UnsafeDevLoginAction.LoginRequest("dev-alice"))
 
-    assertEquals(200, response.statusCode)
+    assertEquals(HTTP_OK, response.statusCode)
     assertNotNull(response.body.sessionToken)
     assertTrue(response.body.sessionToken.isNotEmpty())
   }
