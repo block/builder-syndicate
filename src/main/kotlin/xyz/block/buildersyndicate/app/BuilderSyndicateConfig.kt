@@ -5,6 +5,6 @@ import misk.metrics.backends.prometheus.PrometheusConfig
 import misk.web.WebConfig
 
 data class BuilderSyndicateConfig(
-    val web: WebConfig,
-    val prometheus: PrometheusConfig
+  val web: WebConfig,
+  val prometheus: PrometheusConfig,
 ) : Config
