@@ -15,6 +15,7 @@ import org.jooq.ForeignKey
 import org.jooq.Identity
 import org.jooq.InverseForeignKey
 import org.jooq.Name
+import org.jooq.Path
 import org.jooq.PlainSQL
 import org.jooq.QueryPart
 import org.jooq.Record
@@ -27,12 +28,15 @@ import org.jooq.TableField
 import org.jooq.TableOptions
 import org.jooq.UniqueKey
 import org.jooq.impl.DSL
+import org.jooq.impl.Internal
 import org.jooq.impl.SQLDataType
 import org.jooq.impl.TableImpl
 
 import xyz.block.buildersyndicate.adapters.db.jooq.Buildersyndicate
+import xyz.block.buildersyndicate.adapters.db.jooq.keys.FK_POSTS_AUTHOR
 import xyz.block.buildersyndicate.adapters.db.jooq.keys.KEY_USERS_PRIMARY
 import xyz.block.buildersyndicate.adapters.db.jooq.keys.KEY_USERS_UK_USERS_EXTERNAL_ID
+import xyz.block.buildersyndicate.adapters.db.jooq.tables.Posts.PostsPath
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.records.UsersRecord
 
 
@@ -126,10 +130,39 @@ open class Users(
      * Create a <code>buildersyndicate.users</code> table reference
      */
     constructor(): this(DSL.name("users"), null)
+
+    constructor(path: Table<out Record>, childPath: ForeignKey<out Record, UsersRecord>?, parentPath: InverseForeignKey<out Record, UsersRecord>?): this(Internal.createPathAlias(path, childPath, parentPath), path, childPath, parentPath, USERS, null, null)
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    open class UsersPath : Users, Path<UsersRecord> {
+        constructor(path: Table<out Record>, childPath: ForeignKey<out Record, UsersRecord>?, parentPath: InverseForeignKey<out Record, UsersRecord>?): super(path, childPath, parentPath)
+        private constructor(alias: Name, aliased: Table<UsersRecord>): super(alias, aliased)
+        override fun `as`(alias: String): UsersPath = UsersPath(DSL.name(alias), this)
+        override fun `as`(alias: Name): UsersPath = UsersPath(alias, this)
+        override fun `as`(alias: Table<*>): UsersPath = UsersPath(alias.qualifiedName, this)
+    }
     override fun getSchema(): Schema? = if (aliased()) null else Buildersyndicate.BUILDERSYNDICATE
     override fun getIdentity(): Identity<UsersRecord, Long?> = super.getIdentity() as Identity<UsersRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<UsersRecord> = KEY_USERS_PRIMARY
     override fun getUniqueKeys(): List<UniqueKey<UsersRecord>> = listOf(KEY_USERS_UK_USERS_EXTERNAL_ID)
+
+    private lateinit var _posts: PostsPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>buildersyndicate.posts</code> table
+     */
+    fun posts(): PostsPath {
+        if (!this::_posts.isInitialized)
+            _posts = PostsPath(this, null, FK_POSTS_AUTHOR.inverseKey)
+
+        return _posts;
+    }
+
+    val posts: PostsPath
+        get(): PostsPath = posts()
     override fun `as`(alias: String): Users = Users(DSL.name(alias), this)
     override fun `as`(alias: Name): Users = Users(alias, this)
     override fun `as`(alias: Table<*>): Users = Users(alias.qualifiedName, this)

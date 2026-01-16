@@ -9,6 +9,7 @@ import org.jooq.impl.DSL
 import org.jooq.impl.Internal
 
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.FlywaySchemaHistory
+import xyz.block.buildersyndicate.adapters.db.jooq.tables.Posts
 
 
 
@@ -17,3 +18,5 @@ import xyz.block.buildersyndicate.adapters.db.jooq.tables.FlywaySchemaHistory
 // -------------------------------------------------------------------------
 
 val FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX: Index = Internal.createIndex(DSL.name("flyway_schema_history_s_idx"), FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, arrayOf(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS), false)
+val POSTS_IDX_POSTS_AUTHOR_ID: Index = Internal.createIndex(DSL.name("idx_posts_author_id"), Posts.POSTS, arrayOf(Posts.POSTS.AUTHOR_ID), false)
+val POSTS_IDX_POSTS_CREATED_AT: Index = Internal.createIndex(DSL.name("idx_posts_created_at"), Posts.POSTS, arrayOf(Posts.POSTS.CREATED_AT), false)

@@ -11,6 +11,7 @@ import org.jooq.Table
 import org.jooq.impl.SchemaImpl
 
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.FlywaySchemaHistory
+import xyz.block.buildersyndicate.adapters.db.jooq.tables.Posts
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.SchemaInfo
 import xyz.block.buildersyndicate.adapters.db.jooq.tables.Users
 
@@ -34,6 +35,11 @@ open class Buildersyndicate : SchemaImpl("buildersyndicate", DefaultCatalog.DEFA
     val FLYWAY_SCHEMA_HISTORY: FlywaySchemaHistory get() = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY
 
     /**
+     * The table <code>buildersyndicate.posts</code>.
+     */
+    val POSTS: Posts get() = Posts.POSTS
+
+    /**
      * The table <code>buildersyndicate.schema_info</code>.
      */
     val SCHEMA_INFO: SchemaInfo get() = SchemaInfo.SCHEMA_INFO
@@ -47,6 +53,7 @@ open class Buildersyndicate : SchemaImpl("buildersyndicate", DefaultCatalog.DEFA
 
     override fun getTables(): List<Table<*>> = listOf(
         FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
+        Posts.POSTS,
         SchemaInfo.SCHEMA_INFO,
         Users.USERS
     )

@@ -6,11 +6,13 @@ import misk.inject.KAbstractModule
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
+import xyz.block.buildersyndicate.core.posts.PostRepository
 import xyz.block.buildersyndicate.core.users.UserRepository
 
 public class DatabaseModule : KAbstractModule() {
   override fun configure() {
     bind<UserRepository>().to<JooqUserRepository>()
+    bind<PostRepository>().to<JooqPostRepository>()
   }
 
   @com.google.inject.Provides
