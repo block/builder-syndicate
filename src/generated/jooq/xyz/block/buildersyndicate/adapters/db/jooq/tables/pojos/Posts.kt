@@ -17,6 +17,7 @@ data class Posts(
     val authorId: Long? = null,
     val title: String? = null,
     val body: String? = null,
+    val bodyHtml: String? = null,
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null
 ): Serializable {
@@ -53,6 +54,12 @@ data class Posts(
         }
         else if (this.body != o.body)
             return false
+        if (this.bodyHtml == null) {
+            if (o.bodyHtml != null)
+                return false
+        }
+        else if (this.bodyHtml != o.bodyHtml)
+            return false
         if (this.createdAt == null) {
             if (o.createdAt != null)
                 return false
@@ -75,6 +82,7 @@ data class Posts(
         result = prime * result + (if (this.authorId == null) 0 else this.authorId.hashCode())
         result = prime * result + (if (this.title == null) 0 else this.title.hashCode())
         result = prime * result + (if (this.body == null) 0 else this.body.hashCode())
+        result = prime * result + (if (this.bodyHtml == null) 0 else this.bodyHtml.hashCode())
         result = prime * result + (if (this.createdAt == null) 0 else this.createdAt.hashCode())
         result = prime * result + (if (this.updatedAt == null) 0 else this.updatedAt.hashCode())
         return result
@@ -87,6 +95,7 @@ data class Posts(
         sb.append(", ").append(authorId)
         sb.append(", ").append(title)
         sb.append(", ").append(body)
+        sb.append(", ").append(bodyHtml)
         sb.append(", ").append(createdAt)
         sb.append(", ").append(updatedAt)
 

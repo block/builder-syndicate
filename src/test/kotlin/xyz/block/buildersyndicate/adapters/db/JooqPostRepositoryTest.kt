@@ -57,6 +57,7 @@ class JooqPostRepositoryTest {
       authorId = testUser.id!!,
       title = "Test Post Title",
       body = "This is the body of the test post.",
+      bodyHtml = "<p>This is the body of the test post.</p>",
     )
 
     val created = postRepository.create(post)
@@ -79,6 +80,7 @@ class JooqPostRepositoryTest {
       authorId = testUser.id!!,
       title = "Original Title",
       body = "Original body",
+      bodyHtml = "<p>Original body</p>",
     )
 
     val created = postRepository.create(post)
@@ -86,6 +88,7 @@ class JooqPostRepositoryTest {
       created.copy(
         title = "Updated Title",
         body = "Updated body content",
+        bodyHtml = "<p>Updated body content</p>",
       ),
     )
 
@@ -101,6 +104,7 @@ class JooqPostRepositoryTest {
       authorId = testUser.id!!,
       title = "Post to Delete",
       body = "This post will be deleted",
+      bodyHtml = "<p>This post will be deleted</p>",
     )
 
     val created = postRepository.create(post)
@@ -117,6 +121,7 @@ class JooqPostRepositoryTest {
         authorId = testUser.id!!,
         title = "First Post",
         body = "Created first",
+        bodyHtml = "<p>Created first</p>",
       ),
     )
     Thread.sleep(1100)
@@ -125,6 +130,7 @@ class JooqPostRepositoryTest {
         authorId = testUser.id!!,
         title = "Second Post",
         body = "Created second",
+        bodyHtml = "<p>Created second</p>",
       ),
     )
     Thread.sleep(1100)
@@ -133,6 +139,7 @@ class JooqPostRepositoryTest {
         authorId = testUser.id!!,
         title = "Third Post",
         body = "Created third",
+        bodyHtml = "<p>Created third</p>",
       ),
     )
 
@@ -150,6 +157,7 @@ class JooqPostRepositoryTest {
       authorId = 999999L,
       title = "Invalid Post",
       body = "This should fail",
+      bodyHtml = "<p>This should fail</p>",
     )
 
     assertThrows<Exception> {
@@ -178,6 +186,7 @@ class JooqPostRepositoryTest {
         authorId = testUser.id!!,
         title = "Test User Post",
         body = "By test user",
+        bodyHtml = "<p>By test user</p>",
       ),
     )
     postRepository.create(
@@ -185,6 +194,7 @@ class JooqPostRepositoryTest {
         authorId = otherUser.id!!,
         title = "Other User Post",
         body = "By other user",
+        bodyHtml = "<p>By other user</p>",
       ),
     )
 

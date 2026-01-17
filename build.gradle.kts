@@ -37,6 +37,8 @@ dependencies {
   implementation(libs.wire.runtime)
   implementation(libs.jooq.runtime)
   implementation(libs.mysql.connector)
+  implementation(libs.commonmark)
+  implementation(libs.owasp.html.sanitizer)
 
   flyway(libs.flyway.core)
   flyway(libs.flyway.mysql)

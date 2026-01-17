@@ -34,13 +34,17 @@ open class PostsRecord() : UpdatableRecordImpl<PostsRecord>(Posts.POSTS) {
         set(value): Unit = set(3, value)
         get(): String? = get(3) as String?
 
-    open var createdAt: LocalDateTime?
+    open var bodyHtml: String?
         set(value): Unit = set(4, value)
-        get(): LocalDateTime? = get(4) as LocalDateTime?
+        get(): String? = get(4) as String?
 
-    open var updatedAt: LocalDateTime?
+    open var createdAt: LocalDateTime?
         set(value): Unit = set(5, value)
         get(): LocalDateTime? = get(5) as LocalDateTime?
+
+    open var updatedAt: LocalDateTime?
+        set(value): Unit = set(6, value)
+        get(): LocalDateTime? = get(6) as LocalDateTime?
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -51,11 +55,12 @@ open class PostsRecord() : UpdatableRecordImpl<PostsRecord>(Posts.POSTS) {
     /**
      * Create a detached, initialised PostsRecord
      */
-    constructor(id: Long? = null, authorId: Long? = null, title: String? = null, body: String? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, authorId: Long? = null, title: String? = null, body: String? = null, bodyHtml: String? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.authorId = authorId
         this.title = title
         this.body = body
+        this.bodyHtml = bodyHtml
         this.createdAt = createdAt
         this.updatedAt = updatedAt
         resetChangedOnNotNull()
@@ -70,6 +75,7 @@ open class PostsRecord() : UpdatableRecordImpl<PostsRecord>(Posts.POSTS) {
             this.authorId = value.authorId
             this.title = value.title
             this.body = value.body
+            this.bodyHtml = value.bodyHtml
             this.createdAt = value.createdAt
             this.updatedAt = value.updatedAt
             resetChangedOnNotNull()

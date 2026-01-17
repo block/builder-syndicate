@@ -26,6 +26,7 @@ public class JooqPostRepository @Inject constructor(
       authorId = post.authorId
       title = post.title
       body = post.body
+      bodyHtml = post.bodyHtml
     }
     record.store()
     record.refresh()
@@ -41,6 +42,7 @@ public class JooqPostRepository @Inject constructor(
       authorId = post.authorId
       title = post.title
       body = post.body
+      bodyHtml = post.bodyHtml
     }
     record.store()
     return record.toPost()
@@ -73,6 +75,7 @@ public class JooqPostRepository @Inject constructor(
     authorId = this.authorId!!,
     title = this.title!!,
     body = this.body!!,
+    bodyHtml = this.bodyHtml ?: "",
     createdAt = this.createdAt?.atZone(ZoneId.of("UTC"))?.toInstant(),
     updatedAt = this.updatedAt?.atZone(ZoneId.of("UTC"))?.toInstant(),
   )

@@ -6,6 +6,8 @@ flyway = "11.1.0"
 jooq = "3.19.16"
 mysql-connector = "9.1.0"
 spotless = "8.1.0"
+commonmark = "0.24.0"
+owasp-html-sanitizer = "20240325.1"
 
 [libraries]
 misk-bom = { module = "com.squareup.misk:misk-bom", version.ref = "misk" }
@@ -23,6 +25,8 @@ flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }
 mysql-connector = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector" }
 jooq-runtime = { module = "org.jooq:jooq", version.ref = "jooq" }
+commonmark = { module = "org.commonmark:commonmark", version.ref = "commonmark" }
+owasp-html-sanitizer = { module = "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer", version.ref = "owasp-html-sanitizer" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
