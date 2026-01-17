@@ -87,6 +87,8 @@ just run          # Start the app
 - **Unit tests**: Core logic (pure Kotlin, no DB)
 - **Integration tests**: Repositories against docker MySQL
 - **Service tests**: gRPC services with test fixtures
+- **Test fakes mirror mainline paths** — `core/users/FakeUserRepository.kt` not `testing/FakeUserRepository.kt`
+- **No junk drawer packages** — avoid generic `testing/` or `util/` packages
 
 ### Commits
 
@@ -112,11 +114,11 @@ gt track --parent <branch> <branch>  # Adopt existing branch into stack
 
 ## Authentication (Dev Mode)
 
-For local development, the OSS version ships a fake auth provider:
+For local development, the OSS version ships `UnsafeDevLoginAction`:
 
-1. `GET /login` shows a simple user picker (no external OAuth needed)
-2. Selecting a user sets session cookie
-3. User is created in DB on first selection if not exists
+1. `GET /api/v1/auth/dev-users` lists available dev users
+2. `POST /api/v1/auth/login` with `{"username":"dev-alice"}` creates session
+3. User is created in DB on first login if not exists
 
 `AuthModule` is swappable — enterprises replace with real SSO.
 
@@ -196,6 +198,8 @@ When creating or working tickets:
 - **Add logback.xml early** — Jetty DEBUG logs consume huge token counts; set level to WARN before testing
 - **Use `jakarta.inject`** not `javax.inject` for annotations
 - **WebAction methods can't take HttpCall as parameter** — inject `ActionScoped<HttpCall>` via constructor instead
+- **Per-request scoped providers** — extend `ActionScopedProviderModule`, use `bindProvider(T::class, TProvider::class)`; never use `@Singleton @Provides` with `ActionScoped` dependencies
+- **FakeHttpCall for tests** — use `misk.web.FakeHttpCall` (in misk-testing); it's in `misk.web`, not `misk.testing`
 
 ### Build & Test
 
