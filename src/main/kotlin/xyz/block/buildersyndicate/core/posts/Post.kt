@@ -7,6 +7,7 @@ data class Post(
   val authorId: Long,
   val title: String,
   val body: String,
+  val bodyHtml: String,
   val createdAt: Instant? = null,
   val updatedAt: Instant? = null,
 )

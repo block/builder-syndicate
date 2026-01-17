@@ -100,6 +100,11 @@ open class Posts(
     val BODY: TableField<PostsRecord, String?> = createField(DSL.name("body"), SQLDataType.CLOB.nullable(false), this, "")
 
     /**
+     * The column <code>buildersyndicate.posts.body_html</code>.
+     */
+    val BODY_HTML: TableField<PostsRecord, String?> = createField(DSL.name("body_html"), SQLDataType.CLOB.nullable(false), this, "")
+
+    /**
      * The column <code>buildersyndicate.posts.created_at</code>.
      */
     val CREATED_AT: TableField<PostsRecord, LocalDateTime?> = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
