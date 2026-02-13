@@ -45,7 +45,7 @@ class PostsAction @Inject constructor(
   @ResponseContentType(MediaTypes.APPLICATION_JSON)
   fun list(): PostListResponse {
     val posts = postService.listRecent()
-    return PostListResponse(posts = posts.map { toPostResponse(it) })
+    return PostListResponse(posts = posts.map { it.toPostResponse() })
   }
 
   @Get("/api/v1/posts/{id}")
@@ -56,7 +56,7 @@ class PostsAction @Inject constructor(
       ?: return notFound()
 
     return Response(
-      body = toPostResponse(post),
+      body = post.toPostResponse(),
       statusCode = HTTP_OK,
     )
   }
@@ -73,7 +73,7 @@ class PostsAction @Inject constructor(
     val post = postService.create(user.id!!, request.title, request.body)
 
     return Response(
-      body = toPostResponse(post),
+      body = post.toPostResponse(),
       statusCode = HTTP_CREATED,
     )
   }
@@ -94,7 +94,7 @@ class PostsAction @Inject constructor(
     val updated = postService.update(id, user.id!!, request.title, request.body)
 
     return Response(
-      body = toPostResponse(updated),
+      body = updated.toPostResponse(),
       statusCode = HTTP_OK,
     )
   }
@@ -118,17 +118,17 @@ class PostsAction @Inject constructor(
 
   // -- Helpers --
 
-  private fun toPostResponse(post: DomainPost): PostResponse {
-    val author = userRepository.findById(post.authorId)
+  private fun DomainPost.toPostResponse(): PostResponse {
+    val author = userRepository.findById(authorId)
     return PostResponse(
-      id = post.id!!,
-      title = post.title,
-      body = post.body,
-      body_html = post.bodyHtml,
-      author_id = post.authorId,
+      id = id!!,
+      title = title,
+      body = body,
+      body_html = bodyHtml,
+      author_id = authorId,
       author_username = author?.displayName ?: "unknown",
-      created_at = post.createdAt!!.toString(),
-      updated_at = post.updatedAt!!.toString(),
+      created_at = createdAt!!.toString(),
+      updated_at = updatedAt!!.toString(),
     )
   }
 
