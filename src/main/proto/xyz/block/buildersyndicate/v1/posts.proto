@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package xyz.block.buildersyndicate.v1;
+
+option java_package = "xyz.block.buildersyndicate.protos.v1";
+
+message CreatePostRequest {
+  string title = 1;
+  string body = 2;
+}
+
+message UpdatePostRequest {
+  string title = 1;
+  string body = 2;
+}
+
+message PostResponse {
+  int64 id = 1;
+  string title = 2;
+  string body = 3;
+  string body_html = 4;
+  int64 author_id = 5;
+  string author_username = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message PostListResponse {
+  repeated PostResponse posts = 1;
+}
+
+message ErrorResponse {
+  string error = 1;
+  string message = 2;
+}

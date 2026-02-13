@@ -15,10 +15,15 @@ import misk.web.Response
 import misk.web.ResponseContentType
 import misk.web.actions.WebAction
 import misk.web.mediatype.MediaTypes
-import xyz.block.buildersyndicate.adapters.misk.actions.ErrorResponse
 import xyz.block.buildersyndicate.adapters.misk.auth.CurrentUser
+import xyz.block.buildersyndicate.core.posts.Post as DomainPost
 import xyz.block.buildersyndicate.core.posts.PostService
 import xyz.block.buildersyndicate.core.users.UserRepository
+import xyz.block.buildersyndicate.protos.v1.CreatePostRequest
+import xyz.block.buildersyndicate.protos.v1.ErrorResponse
+import xyz.block.buildersyndicate.protos.v1.PostListResponse
+import xyz.block.buildersyndicate.protos.v1.PostResponse
+import xyz.block.buildersyndicate.protos.v1.UpdatePostRequest
 import java.net.HttpURLConnection.HTTP_CREATED
 import java.net.HttpURLConnection.HTTP_FORBIDDEN
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
@@ -40,9 +45,7 @@ class PostsAction @Inject constructor(
   @ResponseContentType(MediaTypes.APPLICATION_JSON)
   fun list(): PostListResponse {
     val posts = postService.listRecent()
-    return PostListResponse(posts.map { post ->
-      PostResponse.from(post, userRepository.findById(post.authorId))
-    })
+    return PostListResponse(posts = posts.map { toPostResponse(it) })
   }
 
   @Get("/api/v1/posts/{id}")
@@ -53,7 +56,7 @@ class PostsAction @Inject constructor(
       ?: return notFound()
 
     return Response(
-      body = PostResponse.from(post, userRepository.findById(post.authorId)),
+      body = toPostResponse(post),
       statusCode = HTTP_OK,
     )
   }
@@ -70,7 +73,7 @@ class PostsAction @Inject constructor(
     val post = postService.create(user.id!!, request.title, request.body)
 
     return Response(
-      body = PostResponse.from(post, userRepository.findById(post.authorId)),
+      body = toPostResponse(post),
       statusCode = HTTP_CREATED,
     )
   }
@@ -91,7 +94,7 @@ class PostsAction @Inject constructor(
     val updated = postService.update(id, user.id!!, request.title, request.body)
 
     return Response(
-      body = PostResponse.from(updated, userRepository.findById(updated.authorId)),
+      body = toPostResponse(updated),
       statusCode = HTTP_OK,
     )
   }
@@ -113,22 +116,38 @@ class PostsAction @Inject constructor(
     return Response(body = Unit, statusCode = HTTP_NO_CONTENT)
   }
 
+  // -- Helpers --
+
+  private fun toPostResponse(post: DomainPost): PostResponse {
+    val author = userRepository.findById(post.authorId)
+    return PostResponse(
+      id = post.id!!,
+      title = post.title,
+      body = post.body,
+      body_html = post.bodyHtml,
+      author_id = post.authorId,
+      author_username = author?.displayName ?: "unknown",
+      created_at = post.createdAt!!.toString(),
+      updated_at = post.updatedAt!!.toString(),
+    )
+  }
+
   // -- Shared responses --
 
   private fun requireAuth() = currentUser.get().user
 
   private fun unauthorized() = Response<Any>(
-    body = ErrorResponse("unauthorized", "Authentication required"),
+    body = ErrorResponse(error = "unauthorized", message = "Authentication required"),
     statusCode = HTTP_UNAUTHORIZED,
   )
 
   private fun notFound() = Response<Any>(
-    body = ErrorResponse("not_found", "Post not found"),
+    body = ErrorResponse(error = "not_found", message = "Post not found"),
     statusCode = HTTP_NOT_FOUND,
   )
 
   private fun forbidden(message: String) = Response<Any>(
-    body = ErrorResponse("forbidden", message),
+    body = ErrorResponse(error = "forbidden", message = message),
     statusCode = HTTP_FORBIDDEN,
   )
 }

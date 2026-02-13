@@ -9,6 +9,10 @@ import xyz.block.buildersyndicate.core.posts.PostRepository
 import xyz.block.buildersyndicate.core.posts.PostService
 import xyz.block.buildersyndicate.core.users.User
 import xyz.block.buildersyndicate.core.users.UserRepository
+import xyz.block.buildersyndicate.protos.v1.CreatePostRequest
+import xyz.block.buildersyndicate.protos.v1.PostListResponse
+import xyz.block.buildersyndicate.protos.v1.PostResponse
+import xyz.block.buildersyndicate.protos.v1.UpdatePostRequest
 import java.net.HttpURLConnection.HTTP_CREATED
 import java.net.HttpURLConnection.HTTP_FORBIDDEN
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
@@ -139,7 +143,7 @@ class PostsActionTest {
     assertEquals(2, response.posts.size)
     assertEquals("Second", response.posts[0].title)
     assertEquals("First", response.posts[1].title)
-    assertEquals("Alice", response.posts[0].authorUsername)
+    assertEquals("Alice", response.posts[0].author_username)
   }
 
   // -- get --
@@ -163,8 +167,8 @@ class PostsActionTest {
     assertEquals(HTTP_OK, response.statusCode)
     val body = response.body as PostResponse
     assertEquals("Title", body.title)
-    assertEquals("<p># Hello</p>", body.bodyHtml)
-    assertEquals("Alice", body.authorUsername)
+    assertEquals("<p># Hello</p>", body.body_html)
+    assertEquals("Alice", body.author_username)
   }
 
   // -- create --
@@ -173,7 +177,7 @@ class PostsActionTest {
   fun `create returns 401 when not authenticated`() {
     val action = action(currentUser = null)
 
-    val response = action.create(CreatePostRequest("Title", "Body"))
+    val response = action.create(CreatePostRequest(title = "Title", body = "Body"))
 
     assertEquals(HTTP_UNAUTHORIZED, response.statusCode)
   }
@@ -182,14 +186,14 @@ class PostsActionTest {
   fun `create returns 201 with post response`() {
     val action = action(currentUser = alice)
 
-    val response = action.create(CreatePostRequest("My Post", "# Content"))
+    val response = action.create(CreatePostRequest(title = "My Post", body = "# Content"))
 
     assertEquals(HTTP_CREATED, response.statusCode)
     val body = response.body as PostResponse
     assertEquals("My Post", body.title)
-    assertEquals("<p># Content</p>", body.bodyHtml)
-    assertEquals(alice.id, body.authorId)
-    assertEquals("Alice", body.authorUsername)
+    assertEquals("<p># Content</p>", body.body_html)
+    assertEquals(alice.id, body.author_id)
+    assertEquals("Alice", body.author_username)
     assertNotNull(body.id)
   }
 
@@ -199,7 +203,7 @@ class PostsActionTest {
   fun `update returns 401 when not authenticated`() {
     val action = action(currentUser = null)
 
-    val response = action.update(1L, UpdatePostRequest("New", "Body"))
+    val response = action.update(1L, UpdatePostRequest(title = "New", body = "Body"))
 
     assertEquals(HTTP_UNAUTHORIZED, response.statusCode)
   }
@@ -208,7 +212,7 @@ class PostsActionTest {
   fun `update returns 404 for nonexistent post`() {
     val action = action(currentUser = alice)
 
-    val response = action.update(999L, UpdatePostRequest("New", "Body"))
+    val response = action.update(999L, UpdatePostRequest(title = "New", body = "Body"))
 
     assertEquals(HTTP_NOT_FOUND, response.statusCode)
   }
@@ -218,7 +222,7 @@ class PostsActionTest {
     val (action, service) = actionWithService(currentUser = bob)
     val post = service.create(alice.id!!, "Alice's Post", "Content")
 
-    val response = action.update(post.id!!, UpdatePostRequest("Hijacked", "Nope"))
+    val response = action.update(post.id!!, UpdatePostRequest(title = "Hijacked", body = "Nope"))
 
     assertEquals(HTTP_FORBIDDEN, response.statusCode)
   }
@@ -228,12 +232,12 @@ class PostsActionTest {
     val (action, service) = actionWithService(currentUser = alice)
     val post = service.create(alice.id!!, "Original", "Old body")
 
-    val response = action.update(post.id!!, UpdatePostRequest("Updated", "New body"))
+    val response = action.update(post.id!!, UpdatePostRequest(title = "Updated", body = "New body"))
 
     assertEquals(HTTP_OK, response.statusCode)
     val body = response.body as PostResponse
     assertEquals("Updated", body.title)
-    assertEquals("<p>New body</p>", body.bodyHtml)
+    assertEquals("<p>New body</p>", body.body_html)
   }
 
   // -- delete --
