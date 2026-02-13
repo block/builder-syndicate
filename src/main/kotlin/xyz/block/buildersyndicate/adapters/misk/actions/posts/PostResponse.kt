@@ -27,22 +27,3 @@ data class PostResponse(
     )
   }
 }
-
-data class PostListResponse(
-  val posts: List<PostResponse>,
-)
-
-data class CreatePostRequest(
-  val title: String,
-  val body: String,
-)
-
-data class UpdatePostRequest(
-  val title: String,
-  val body: String,
-)
-
-data class ErrorResponse(
-  val error: String,
-  val message: String,
-)

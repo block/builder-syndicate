@@ -15,6 +15,7 @@ import misk.web.Response
 import misk.web.ResponseContentType
 import misk.web.actions.WebAction
 import misk.web.mediatype.MediaTypes
+import xyz.block.buildersyndicate.adapters.misk.actions.ErrorResponse
 import xyz.block.buildersyndicate.adapters.misk.auth.CurrentUser
 import xyz.block.buildersyndicate.core.posts.PostService
 import xyz.block.buildersyndicate.core.users.UserRepository
