@@ -111,6 +111,22 @@
   border-color: var(--border-accent);
 }
 
+.nav-new-post {
+  background: var(--gradient-primary);
+  color: white;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.nav-new-post:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
+  color: white;
+}
+
 /* Main content */
 .main {
   flex: 1;

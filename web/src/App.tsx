@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './hooks/useAuth'
 import FeedPage from './pages/FeedPage'
 import LoginPage from './pages/LoginPage'
 import PostDetailPage from './pages/PostDetailPage'
+import CreatePostPage from './pages/CreatePostPage'
 import logo from './assets/logo.svg'
 import './styles/theme.css'
 import './App.css'
@@ -29,6 +30,7 @@ function NavBar() {
         {!isLoading && (
           isLoggedIn ? (
             <>
+              <Link to="/posts/new" className="nav-new-post">+ New Post</Link>
               <span className="nav-user">{user?.displayName}</span>
               <button onClick={logout} className="nav-btn">Logout</button>
             </>
@@ -51,6 +53,7 @@ function App() {
             <main className="main">
               <Routes>
                 <Route path="/" element={<FeedPage />} />
+                <Route path="/posts/new" element={<CreatePostPage />} />
                 <Route path="/posts/:id" element={<PostDetailPage />} />
                 <Route path="/login" element={<LoginPage />} />
               </Routes>
