@@ -6,6 +6,18 @@ export default defineConfig({
   base: '/app/',
   build: {
     outDir: '../build/web',
-    emptyOutDir: true
-  }
+    emptyOutDir: true,
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+      '/logout': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+    },
+  },
 })
