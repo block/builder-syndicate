@@ -120,24 +120,6 @@
   width: 100%;
 }
 
-.placeholder {
-  text-align: center;
-  padding: var(--sp-16) 0;
-}
-
-.placeholder h1 {
-  font-size: var(--text-3xl);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
-  margin-bottom: var(--sp-2);
-}
-
-.placeholder p {
-  color: var(--text-secondary);
-  font-size: var(--text-lg);
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .nav {
