@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { ThemeProvider, useTheme } from './hooks/useTheme'
 import { AuthProvider, useAuth } from './hooks/useAuth'
+import FeedPage from './pages/FeedPage'
 import LoginPage from './pages/LoginPage'
 import logo from './assets/logo.svg'
 import './styles/theme.css'
@@ -48,7 +49,7 @@ function App() {
             <NavBar />
             <main className="main">
               <Routes>
-                <Route path="/" element={<div className="placeholder"><h1>Builder Syndicate</h1><p>A link aggregator for builders.</p></div>} />
+                <Route path="/" element={<FeedPage />} />
                 <Route path="/login" element={<LoginPage />} />
               </Routes>
             </main>
