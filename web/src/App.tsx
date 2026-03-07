@@ -3,6 +3,7 @@ import { ThemeProvider, useTheme } from './hooks/useTheme'
 import { AuthProvider, useAuth } from './hooks/useAuth'
 import FeedPage from './pages/FeedPage'
 import LoginPage from './pages/LoginPage'
+import PostDetailPage from './pages/PostDetailPage'
 import logo from './assets/logo.svg'
 import './styles/theme.css'
 import './App.css'
@@ -50,6 +51,7 @@ function App() {
             <main className="main">
               <Routes>
                 <Route path="/" element={<FeedPage />} />
+                <Route path="/posts/:id" element={<PostDetailPage />} />
                 <Route path="/login" element={<LoginPage />} />
               </Routes>
             </main>
