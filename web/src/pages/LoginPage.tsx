@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { fetchDevUsers } from '../api/auth'
 import { DevUser } from '../types/api'
@@ -9,13 +9,15 @@ import './LoginPage.css'
 function LoginPage() {
   const { isLoggedIn, login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = (location.state as { from?: string })?.from ?? '/'
   const [devUsers, setDevUsers] = useState<DevUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/', { replace: true })
+      navigate(from, { replace: true })
       return
     }
     fetchDevUsers()
@@ -28,7 +30,7 @@ function LoginPage() {
     try {
       setError(null)
       await login(username)
-      navigate('/', { replace: true })
+      navigate(from, { replace: true })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed')
     }

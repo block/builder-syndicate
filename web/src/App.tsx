@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
 import { ThemeProvider, useTheme } from './hooks/useTheme'
 import { AuthProvider, useAuth } from './hooks/useAuth'
 import FeedPage from './pages/FeedPage'
@@ -43,6 +43,15 @@ function NavBar() {
   )
 }
 
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const { isLoggedIn, isLoading } = useAuth()
+  const location = useLocation()
+
+  if (isLoading) return <div className="auth-loading">Loading...</div>
+  if (!isLoggedIn) return <Navigate to="/login" state={{ from: location.pathname }} replace />
+  return <>{children}</>
+}
+
 function App() {
   return (
     <BrowserRouter basename="/app">
@@ -52,10 +61,10 @@ function App() {
             <NavBar />
             <main className="main">
               <Routes>
-                <Route path="/" element={<FeedPage />} />
-                <Route path="/posts/new" element={<CreatePostPage />} />
-                <Route path="/posts/:id" element={<PostDetailPage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/" element={<RequireAuth><FeedPage /></RequireAuth>} />
+                <Route path="/posts/new" element={<RequireAuth><CreatePostPage /></RequireAuth>} />
+                <Route path="/posts/:id" element={<RequireAuth><PostDetailPage /></RequireAuth>} />
               </Routes>
             </main>
           </div>

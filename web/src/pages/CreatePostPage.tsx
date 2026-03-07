@@ -1,22 +1,14 @@
-import { useState, useEffect, FormEvent } from 'react'
+import { useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
 import { createPost } from '../api/posts'
 import './CreatePostPage.css'
 
 function CreatePostPage() {
-  const { isLoggedIn, isLoading } = useAuth()
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!isLoading && !isLoggedIn) {
-      navigate('/login', { replace: true })
-    }
-  }, [isLoggedIn, isLoading, navigate])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -34,9 +26,6 @@ function CreatePostPage() {
       setIsSubmitting(false)
     }
   }
-
-  if (isLoading) return <div className="create-status">Loading...</div>
-  if (!isLoggedIn) return null
 
   return (
     <div className="create-post">
