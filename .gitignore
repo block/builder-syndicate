@@ -18,6 +18,9 @@ mysql-data/
 web/node_modules/
 prs/*.md
 
+# Claude Code
+.claude/settings.local.json
+
 # Kotlin Formatter
 .kotlinformatter/
 /.hermit/node/cache/

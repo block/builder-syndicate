@@ -142,6 +142,7 @@ When creating or working tickets:
 
 ## Code Style
 
+- **OOP naming: object→noun, method→verb** — classes are true nouns (`PostResponse`, `PostService`), methods are verbs (`from()`, `create()`). Avoid `-er` nouns that are just objectified verbs (`Mapper`, `Builder`, `Handler`) — if a class is named for what it *does* rather than what it *is*, rethink the design. Prefer companion factories (`PostResponse.from(post, author)`) over single-purpose `-er` classes.
 - **No sloppy overcommenting** — code should be self-explanatory; comments are for "why", not "what"
 - **Don't narrate the obvious** — `// Create a new user` above `createUser()` is noise
 - **Match existing patterns** — look at neighboring code before inventing new conventions
