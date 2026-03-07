@@ -1,11 +1,14 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { ThemeProvider, useTheme } from './hooks/useTheme'
+import { AuthProvider, useAuth } from './hooks/useAuth'
+import LoginPage from './pages/LoginPage'
 import logo from './assets/logo.svg'
 import './styles/theme.css'
 import './App.css'
 
 function NavBar() {
   const { theme, toggleTheme } = useTheme()
+  const { user, isLoggedIn, isLoading, logout } = useAuth()
 
   return (
     <nav className="nav">
@@ -21,6 +24,16 @@ function NavBar() {
         >
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
+        {!isLoading && (
+          isLoggedIn ? (
+            <>
+              <span className="nav-user">{user?.displayName}</span>
+              <button onClick={logout} className="nav-btn">Logout</button>
+            </>
+          ) : (
+            <Link to="/login" className="nav-link">Login</Link>
+          )
+        )}
       </div>
     </nav>
   )
@@ -30,14 +43,17 @@ function App() {
   return (
     <BrowserRouter basename="/app">
       <ThemeProvider>
-        <div className="app">
-          <NavBar />
-          <main className="main">
-            <Routes>
-              <Route path="/" element={<div className="placeholder"><h1>Builder Syndicate</h1><p>A link aggregator for builders.</p></div>} />
-            </Routes>
-          </main>
-        </div>
+        <AuthProvider>
+          <div className="app">
+            <NavBar />
+            <main className="main">
+              <Routes>
+                <Route path="/" element={<div className="placeholder"><h1>Builder Syndicate</h1><p>A link aggregator for builders.</p></div>} />
+                <Route path="/login" element={<LoginPage />} />
+              </Routes>
+            </main>
+          </div>
+        </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>
   )
