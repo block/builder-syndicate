@@ -43,6 +43,14 @@ function NavBar() {
   )
 }
 
+function StripTrailingSlash() {
+  const location = useLocation()
+  if (location.pathname !== '/' && location.pathname.endsWith('/')) {
+    return <Navigate to={location.pathname.slice(0, -1)} replace />
+  }
+  return null
+}
+
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const { isLoggedIn, isLoading } = useAuth()
   const location = useLocation()
@@ -60,6 +68,7 @@ function App() {
           <div className="app">
             <NavBar />
             <main className="main">
+              <StripTrailingSlash />
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/" element={<RequireAuth><FeedPage /></RequireAuth>} />
