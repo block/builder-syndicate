@@ -1,12 +1,12 @@
 [versions]
 kotlin = "2.3.21"
-misk = "2025.12.18.190627-2b05cda"
-wire = "5.4.0"
+misk = "2025.12.22.170005-34841c2"
+wire = "5.5.1"
 flyway = "11.1.0"
-jooq = "3.19.16"
-mysql-connector = "9.1.0"
-spotless = "8.1.0"
-commonmark = "0.24.0"
+jooq = "3.21.2"
+mysql-connector = "9.7.0"
+spotless = "8.4.0"
+commonmark = "0.28.0"
 owasp-html-sanitizer = "20240325.1"
 
 [libraries]
