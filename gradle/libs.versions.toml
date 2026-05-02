@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.1.0"
+kotlin = "2.3.21"
 misk = "2025.12.18.190627-2b05cda"
 wire = "5.4.0"
 flyway = "11.1.0"
